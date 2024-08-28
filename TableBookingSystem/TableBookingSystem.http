@@ -1,0 +1,6 @@
+@TableBookingSystem_HostAddress = http://localhost:5068
+
+GET {{TableBookingSystem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
