@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using TableBookingSystem.Data;
+
 namespace TableBookingSystem
 {
 	public class Program
@@ -6,6 +9,11 @@ namespace TableBookingSystem
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
+
+			builder.Services.AddDbContext<TableBookingSystemContext>(options =>
+			{
+				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+			});
 
 			// Add services to the container.
 
