@@ -30,10 +30,28 @@ namespace TableBookingSystem.Services
 				_customerRepo.DeleteCustomerAsync(customerId);
 			}
 		}
-		public async Task UpdateCustomerAsync(CustomerDTO customer)
+		public async Task UpdateCustomerAsync(int customerId, CustomerDTO customerDTO)
 		{
-			var updatedCustomer = _mapper.Map<Customer>(customer);
-			await _customerRepo.UpdateCustomerAsync(updatedCustomer);
+			var customer = await _customerRepo.GetCustomerByIdAsync(customerId);
+
+			// Updates only the properties that are provided
+			if (!string.IsNullOrEmpty(customerDTO.FirstName))
+			{
+				customer.FirstName = customerDTO.FirstName;
+			}
+			if (!string.IsNullOrEmpty(customerDTO.LastName))
+			{
+				customer.LastName = customerDTO.LastName;
+			}
+			if (!string.IsNullOrEmpty(customerDTO.Email))
+			{
+				customer.Email = customerDTO.Email;
+			}
+			if (!string.IsNullOrEmpty(customerDTO.PhoneNumber))
+			{
+				customer.PhoneNumber = customerDTO.PhoneNumber;
+			}
+			await _customerRepo.UpdateCustomerAsync(customer);
 		}
 
 		public async Task<IEnumerable<CustomerViewModel>> GetAllCustomersAsync()

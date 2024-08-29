@@ -30,7 +30,7 @@ namespace TableBookingSystem.Controllers
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-		[HttpDelete("deletecustomer")]
+		[HttpDelete("deletecustomer/{customerId}")]
 		public async Task<ActionResult> DeleteCustomer(int customerId)
 		{
 			try
@@ -43,12 +43,12 @@ namespace TableBookingSystem.Controllers
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-		[HttpPut("updatecustomer")]
-		public async Task<ActionResult> UpdateCustomerInfo([FromBody] CustomerDTO customer)
+		[HttpPut("updatecustomer/{customerId}")]
+		public async Task<ActionResult> UpdateCustomerInfo(int customerId, CustomerDTO customer)
 		{
 			try
 			{
-				await _customerService.UpdateCustomerAsync(customer);
+				await _customerService.UpdateCustomerAsync(customerId, customer);
 				return Ok();
 			}
 			catch (Exception ex)
@@ -57,7 +57,7 @@ namespace TableBookingSystem.Controllers
 			}
 		}
 		[HttpGet("getallcustomers")]
-		public async Task<ActionResult<IEnumerable<CustomerViewModel>>> ViewAllCustomers(CustomerViewModel customer)
+		public async Task<ActionResult<IEnumerable<CustomerViewModel>>> ViewAllCustomers()
 		{
 			try
 			{
@@ -69,13 +69,13 @@ namespace TableBookingSystem.Controllers
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-		[HttpGet("getcustomer")]
-		public async Task<ActionResult> GetCustomerById(CustomerDTO customerDTO)
+		[HttpGet("getcustomer/{customerId}")]
+		public async Task<ActionResult> GetCustomerById(int customerId)
 		{
 			try
 			{
-				var customer = await _customerService.GetCustomerByIdAsync(customerDTO.CustomerId);
-				if (customerDTO == null)
+				var customer = await _customerService.GetCustomerByIdAsync(customerId);
+				if (customer == null)
 				{
 					return NotFound();
 				}
