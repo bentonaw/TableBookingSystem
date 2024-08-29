@@ -17,7 +17,7 @@ namespace TableBookingSystem.Controllers
         }
 
 
-		[HttpPost("createcustomer")]
+		[HttpPost]
 		public async Task<ActionResult> CreateCustomer([FromBody] CustomerDTO customer)
 		{
 			try
@@ -30,7 +30,7 @@ namespace TableBookingSystem.Controllers
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-		[HttpDelete("deletecustomer/{customerId}")]
+		[HttpDelete("{customerId}")]
 		public async Task<ActionResult> DeleteCustomer(int customerId)
 		{
 			try
@@ -43,7 +43,7 @@ namespace TableBookingSystem.Controllers
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-		[HttpPut("updatecustomer/{customerId}")]
+		[HttpPatch("{customerId}")]
 		public async Task<ActionResult> UpdateCustomerInfo(int customerId, CustomerDTO customer)
 		{
 			try
@@ -56,7 +56,7 @@ namespace TableBookingSystem.Controllers
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-		[HttpGet("getallcustomers")]
+		[HttpGet]
 		public async Task<ActionResult<IEnumerable<CustomerViewModel>>> ViewAllCustomers()
 		{
 			try
@@ -69,7 +69,7 @@ namespace TableBookingSystem.Controllers
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-		[HttpGet("getcustomer/{customerId}")]
+		[HttpGet("{customerId}")]
 		public async Task<ActionResult> GetCustomerById(int customerId)
 		{
 			try
