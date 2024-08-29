@@ -1,6 +1,11 @@
 
 using Microsoft.EntityFrameworkCore;
 using TableBookingSystem.Data;
+using TableBookingSystem.Data.Repo;
+using TableBookingSystem.Data.Repo.IRepo;
+using TableBookingSystem.Mappings;
+using TableBookingSystem.Services;
+using TableBookingSystem.Services.IService;
 
 namespace TableBookingSystem
 {
@@ -9,18 +14,25 @@ namespace TableBookingSystem
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
+			var services = builder.Services;
 
-			builder.Services.AddDbContext<TableBookingSystemContext>(options =>
+			services.AddDbContext<TableBookingSystemContext>(options =>
 			{
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 			});
 
 			// Add services to the container.
 
-			builder.Services.AddControllers();
+			services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+
+			services.AddEndpointsApiExplorer();
+			services.AddSwaggerGen();
+
+			services.AddScoped<ICustomerRepo, CustomerRepo>();
+			services.AddScoped<ICustomerService, CustomerService>();
+
+			services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 			var app = builder.Build();
 
