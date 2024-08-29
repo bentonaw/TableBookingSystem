@@ -2,6 +2,7 @@
 using TableBookingSystem.Data.Repo.IRepo;
 using TableBookingSystem.Models;
 using TableBookingSystem.Models.DTOs;
+using TableBookingSystem.Models.ViewModels;
 using TableBookingSystem.Services.IService;
 
 namespace TableBookingSystem.Services
@@ -35,16 +36,16 @@ namespace TableBookingSystem.Services
 			await _customerRepo.UpdateCustomerAsync(updatedCustomer);
 		}
 
-		public async Task<IEnumerable<CustomerDTO>> GetAllCustomersAsync()
+		public async Task<IEnumerable<CustomerViewModel>> GetAllCustomersAsync()
 		{
 			var customersList = await _customerRepo.GetAllCustomersAsync();
-			return _mapper.Map<IEnumerable<CustomerDTO>>(customersList);
+			return _mapper.Map<IEnumerable<CustomerViewModel>>(customersList);
 		}
 
-		public async Task<CustomerDTO> GetCustomerByIdAsync(int customerId)
+		public async Task<CustomerViewModel> GetCustomerByIdAsync(int customerId)
 		{
 			var customer = await _customerRepo.GetCustomerByIdAsync(customerId);
-			return customer != null ? _mapper.Map<CustomerDTO>(customer) : null;
+			return customer != null ? _mapper.Map<CustomerViewModel>(customer) : null;
 		}
 
 		
