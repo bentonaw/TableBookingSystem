@@ -9,9 +9,16 @@ namespace TableBookingSystem.Models
         public int ReservationId { get; set; }
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
-        [ForeignKey("TimeSlot")]
+		public Customer Customer { get; set; }
+		[ForeignKey("TimeSlot")]
         public int TimeSlotId { get; set; }
-        [Required]
+		public TimeSlot Timeslot { get; set; }
+        [ForeignKey("TableReservation")]
+		public ICollection<TableReservation> TableReservations { get; set; }
+		[Required]
         public int NrOfSeats { get; set; }
+        [Required]
+        public DateTime ReservationDate { get; set; }
+        
     }
 }
