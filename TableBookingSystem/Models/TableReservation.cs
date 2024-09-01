@@ -9,7 +9,9 @@ namespace TableBookingSystem.Models
         public int TableReservationId { get; set; }
         [ForeignKey("Reservation")]
         public int ReservationId { get; set; }
-        [ForeignKey("Table")]
+		public Reservation Reservation { get; set; }
+		[ForeignKey("Table")]
         public int TableId { get; set; }
-    }
+		public Table Table { get; set; }
+	}
 }

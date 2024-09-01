@@ -7,7 +7,7 @@ namespace TableBookingSystem.Models
         [Key]
         public int TableId { get; set; }
         public int TableNumber { get; set; }
-        public int SeatCount { get; set; }
+        public int Capacity { get; set; }
         public bool Communal { get; set; }
     }
 }

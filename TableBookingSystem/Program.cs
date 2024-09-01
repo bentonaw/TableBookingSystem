@@ -31,6 +31,8 @@ namespace TableBookingSystem
 
 			services.AddScoped<ICustomerRepo, CustomerRepo>();
 			services.AddScoped<ICustomerService, CustomerService>();
+			services.AddScoped<IReservationRepo, ReservationRepo>();
+			services.AddScoped<IReservationService, ReservationService>();
 
 			services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
