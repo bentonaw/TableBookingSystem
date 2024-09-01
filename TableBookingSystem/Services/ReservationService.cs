@@ -46,7 +46,7 @@ namespace TableBookingSystem.Services
 
 		public async Task<IEnumerable<ReservationViewModel>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate)
 		{
-			var reservationList = await _repo.GetReservationsByDateRangeAsync(startDate, endDate)
+			var reservationList = await _repo.GetReservationsByDateRangeAsync(startDate, endDate);
 			return _mapper.Map<IEnumerable<ReservationViewModel>>(reservationList);
 		}
 		// Only allows for change of nr of seats

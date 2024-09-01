@@ -5,7 +5,7 @@ namespace TableBookingSystem.Models.DTOs
 {
 	public class ReservationDTO
 	{
-		//public int ReservationId { get; set; }
+		public int ReservationId { get; set; }
 		public int CustomerId { get; set; }
 		public Customer Customer { get; set; }
 		public int TimeSlotId { get; set; }
