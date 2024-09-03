@@ -33,12 +33,12 @@ namespace TableBookingSystem.Controllers
 
 		}
 
-		[HttpGet("customer/{customerId}")]
-		public async Task<ActionResult<IEnumerable<ReservationViewModel>>> GetReservationsByCustomerId(int customerId)
+		[HttpGet("customer/{customerLastName}")]
+		public async Task<ActionResult<IEnumerable<ReservationViewModel>>> GetReservationsByCustomerId([FromQuery] string lastName)
 		{
 			try
 			{
-				var customer = await _reservationService.GetReservationsByCustomerIdAsync(customerId);
+				var customer = await _reservationService.GetReservationsByCustomerLastNameAsync(lastName);
 				if (customer == null)
 				{
 					return NotFound();

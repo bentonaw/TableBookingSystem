@@ -13,12 +13,14 @@ namespace TableBookingSystem.Mappings
             CreateMap<Customer, CustomerViewModel>();
             CreateMap<CustomerDTO, Customer>();
             CreateMap<CustomerViewModel, Customer>();
+            CreateMap<CustomerViewModel, CustomerDTO>();
             CreateMap<CustomerDTO, CustomerViewModel>();
 
 			CreateMap<Reservation, ReservationDTO>();
 			CreateMap<Reservation, ReservationViewModel>();
 			CreateMap<ReservationDTO, Reservation>();
 			CreateMap<ReservationViewModel, Reservation>();
+			CreateMap<ReservationViewModel, ReservationDTO>();
 			CreateMap<ReservationDTO, ReservationViewModel>();
 
 		}
