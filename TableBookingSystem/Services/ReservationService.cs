@@ -38,9 +38,9 @@ namespace TableBookingSystem.Services
 			return reservation != null ? _mapper.Map<ReservationViewModel>(reservation) : null;
 		}
 
-		public async Task<IEnumerable<ReservationViewModel>> GetReservationsByCustomerIdAsync(int customerId)
+		public async Task<IEnumerable<ReservationViewModel>> GetReservationsByCustomerLastNameAsync(string lastName)
 		{
-			var reservationList = await _repo.GetReservationsByCustomerIdAsync(customerId);
+			var reservationList = await _repo.GetReservationsByCustomerLastNameAsync(lastName);
 			return _mapper.Map<IEnumerable<ReservationViewModel>>(reservationList);
 		}
 

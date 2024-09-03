@@ -33,10 +33,10 @@ namespace TableBookingSystem.Data.Repo
 			return reservation;
 		}
 
-		public async Task<IEnumerable<Reservation>> GetReservationsByCustomerIdAsync(int customerId)
+		public async Task<IEnumerable<Reservation>> GetReservationsByCustomerLastNameAsync(string lastName)
 		{
 			var reservations = await _context.Reservations
-				.Where(r => r.Customer.CustomerId == customerId)
+				.Where(r => r.Customer.LastName.Contains(lastName))
 				.ToListAsync();
 			return reservations;
 		}
