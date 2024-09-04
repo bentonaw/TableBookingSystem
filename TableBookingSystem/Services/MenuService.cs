@@ -28,7 +28,7 @@ namespace TableBookingSystem.Services
 			var menuItem = await _menuRepo.GetMenuItemByIdAsync(menuItemId);
 			if (menuItem != null)
 			{
-				_menuRepo.DeleteMenuItemAsync(menuItemId);
+				await _menuRepo.DeleteMenuItemAsync(menuItemId);
 			}
 		}
 		
