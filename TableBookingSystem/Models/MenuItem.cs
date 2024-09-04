@@ -18,7 +18,7 @@ namespace TableBookingSystem.Models
 		public double Price { get; set; }
 		[StringLength(50), MinLength(2)]
 		public string AllergyCaution { get; set; }
-        public MenuItemAvailability MenuItemAvailability { get; set; }
+        public int Quantity { get; set; }
 
     }
 }

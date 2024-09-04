@@ -6,9 +6,9 @@ namespace TableBookingSystem.Data.Repo.IRepo
 	public interface IMenuRepo
 	{
 		Task<IEnumerable<MenuItem>> GetAllMenuItemsAsync();
-		Task<MenuItemDTO> GetMenuItemAsync(int menuItemId);
-		Task AddMenuItemAsync(MenuItemDTO menuItemDTO);
-		Task UpdateMenuItemAsync(int menuItemId);
+		Task<MenuItem> GetMenuItemByIdAsync(int menuItemId);
+		Task AddMenuItemAsync(MenuItem menuItem);
+		Task UpdateMenuItemAsync(MenuItem menuItem);
 		Task DeleteMenuItemAsync(int menuItemId);
 	}
 }

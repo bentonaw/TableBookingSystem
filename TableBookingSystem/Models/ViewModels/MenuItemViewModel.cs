@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TableBookingSystem.Models.DTOs
+﻿namespace TableBookingSystem.Models.ViewModels
 {
-	public class MenuItemDTO
+	public class MenuItemViewModel
 	{
 		public int MenuItemId { get; set; }
 		public string MenuItemName { get; set; }
@@ -11,6 +9,5 @@ namespace TableBookingSystem.Models.DTOs
 		public double Price { get; set; }
 		public string AllergyCaution { get; set; }
 		public int Quantity { get; set; }
-		public bool IsOutOfStock => Quantity == 0;
 	}
 }
