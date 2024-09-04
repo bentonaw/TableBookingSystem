@@ -1,4 +1,5 @@
-﻿using TableBookingSystem.Data.Repo.IRepo;
+﻿using Microsoft.EntityFrameworkCore;
+using TableBookingSystem.Data.Repo.IRepo;
 using TableBookingSystem.Models;
 using TableBookingSystem.Models.DTOs;
 
@@ -13,29 +14,38 @@ namespace TableBookingSystem.Data.Repo
         }
 
 
-		public Task AddMenuItemAsync(MenuItemDTO )
+		public async Task AddMenuItemAsync(MenuItem menuItem)
 		{
-			throw new NotImplementedException();
+			await _context.MenuItems.AddAsync(menuItem);
+			await _context.SaveChangesAsync();
 		}
 
-		public Task DeleteMenuItemAsync(int customerId)
+		public async Task DeleteMenuItemAsync(int menuItemId)
 		{
-			throw new NotImplementedException();
+			var menuItem = await _context.MenuItems.FindAsync(menuItemId);
+			if (menuItem != null)
+			{
+				_context.MenuItems.Remove(menuItem);
+			}
+			await _context.SaveChangesAsync();
 		}
 
-		public Task<IEnumerable<MenuItem>> GetAllMenuItemsAsync()
+		public async Task<IEnumerable<MenuItem>> GetAllMenuItemsAsync()
 		{
-			throw new NotImplementedException();
+			var menuItems = await _context.MenuItems.ToListAsync();
+			return menuItems;
 		}
 
-		public Task<MenuItemDTO> GetMenuItemAsync(int menuItemId)
+		public async Task<MenuItem> GetMenuItemByIdAsync(int menuItemId)
 		{
-			throw new NotImplementedException();
+			var menuItem = await _context.MenuItems.FindAsync(menuItemId);
+			return menuItem;
 		}
 
-		public Task UpdateMenuItemAsync(int menuItemId)
+		public async Task UpdateMenuItemAsync(MenuItem menuItem)
 		{
-			throw new NotImplementedException();
+			_context.MenuItems.Update(menuItem);
+			await _context.SaveChangesAsync();
 		}
 	}
 }

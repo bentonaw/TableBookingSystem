@@ -15,6 +15,8 @@ namespace TableBookingSystem.Data
         public DbSet<Table> Tables { get; set; }
         public DbSet<TableReservation> TableReservations { get; set; }
         public DbSet<TimeSlot> TimeSlot { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<MenuItem> MenuItems { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
