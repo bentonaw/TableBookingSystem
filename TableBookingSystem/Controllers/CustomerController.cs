@@ -18,11 +18,11 @@ namespace TableBookingSystem.Controllers
 
 
 		[HttpPost]
-		public async Task<ActionResult> CreateCustomer([FromBody] CustomerDTO customer)
+		public async Task<ActionResult> CreateCustomer([FromBody] CustomerDTO customerDTO)
 		{
 			try
 			{
-				await _customerService.AddCustomersAsync(customer);
+				await _customerService.AddCustomersAsync(customerDTO);
 				return Ok();
 			}
 			catch (Exception ex)
@@ -75,11 +75,7 @@ namespace TableBookingSystem.Controllers
 			try
 			{
 				var customer = await _customerService.GetCustomerByIdAsync(customerId);
-				if (customer == null)
-				{
-					return NotFound();
-				}
-				return Ok(customer);
+				return customer == null ? NotFound() : Ok(customer);
 			}
 			catch (Exception ex)
 			{

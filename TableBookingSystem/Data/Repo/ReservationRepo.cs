@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TableBookingSystem.Data.Repo.IRepo;
 using TableBookingSystem.Models;
+using TableBookingSystem.Models.DTOs;
 
 namespace TableBookingSystem.Data.Repo
 {
@@ -40,12 +41,6 @@ namespace TableBookingSystem.Data.Repo
 				.ToListAsync();
 			return reservations;
 		}
-
-		//public Task<IEnumerable<Reservation>> GetReservationsByDateAsync(DateTime date)
-		//{
-		//	var reservations = await _context.Reservations.FindAsync(reservationId);
-		//	return reservations;
-		//}
 
 		public async Task<IEnumerable<Reservation>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate)
 		{

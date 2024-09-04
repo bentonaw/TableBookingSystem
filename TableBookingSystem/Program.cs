@@ -33,6 +33,9 @@ namespace TableBookingSystem
 			services.AddScoped<ICustomerService, CustomerService>();
 			services.AddScoped<IReservationRepo, ReservationRepo>();
 			services.AddScoped<IReservationService, ReservationService>();
+			services.AddScoped<IMenuRepo, MenuRepo>();
+			services.AddScoped<IMenuService, MenuService>();
+
 
 			services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
@@ -48,7 +51,6 @@ namespace TableBookingSystem
 			app.UseHttpsRedirection();
 
 			app.UseAuthorization();
-
 
 			app.MapControllers();
 
