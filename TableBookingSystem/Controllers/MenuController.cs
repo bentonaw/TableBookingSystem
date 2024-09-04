@@ -30,7 +30,7 @@ namespace TableBookingSystem.Controllers
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-		[HttpDelete("{menuItemId")]
+		[HttpDelete("{menuItemId}")]
 		public async Task<ActionResult> DeleteMenuItem(int menuItemId)
 		{
 			try
@@ -43,7 +43,7 @@ namespace TableBookingSystem.Controllers
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-		[HttpPatch("{menuItemId")]
+		[HttpPatch("{menuItemId}")]
 		public async Task<ActionResult> UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO)
 		{
 			try
@@ -69,7 +69,7 @@ namespace TableBookingSystem.Controllers
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-		[HttpGet("{menuItemId")]
+		[HttpGet("{menuItemId}")]
 		public async Task<ActionResult<MenuItemViewModel>> GetMenuItemByIdAsync(int menuItemId)
 		{
 			try
