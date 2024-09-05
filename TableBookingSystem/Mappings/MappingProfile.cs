@@ -9,29 +9,11 @@ namespace TableBookingSystem.Mappings
 	{
         public MappingProfile()
         {
-            CreateMap<Customer, CustomerDTO>();
+            CreateMap<Customer, CreateCustomerDTO>();
             CreateMap<Customer, CustomerViewModel>();
-            CreateMap<CustomerDTO, Customer>();
-			CreateMap<CustomerDTO, CustomerViewModel>();
-			CreateMap<CustomerViewModel, Customer>();
-            CreateMap<CustomerViewModel, CustomerDTO>();
-            
-
-			CreateMap<Reservation, ReservationDTO>();
-			CreateMap<Reservation, ReservationViewModel>();
-			CreateMap<ReservationDTO, Reservation>();
-			CreateMap<ReservationDTO, ReservationViewModel>();
-			CreateMap<ReservationViewModel, Reservation>();
-			CreateMap<ReservationViewModel, ReservationDTO>();
-			
-			CreateMap<MenuItem, MenuItemDTO>();
-			CreateMap<MenuItem, MenuItemViewModel>();
-			CreateMap<MenuItemDTO, MenuItem>();
-			CreateMap<MenuItemDTO, MenuItemViewModel>();
-			CreateMap<MenuItemViewModel, MenuItem>();
-			CreateMap<MenuItemViewModel, MenuItemDTO>();
-			
-
-		}
+            CreateMap<CreateCustomerDTO, Customer>();
+            CreateMap<CustomerViewModel, Customer>();
+            CreateMap<CreateCustomerDTO, CustomerViewModel>();
+        }
     }
 }

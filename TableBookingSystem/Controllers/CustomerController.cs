@@ -18,11 +18,11 @@ namespace TableBookingSystem.Controllers
 
 
 		[HttpPost]
-		public async Task<ActionResult> CreateCustomer([FromBody] CustomerDTO customerDTO)
+		public async Task<ActionResult> CreateCustomer([FromBody] CreateCustomerDTO customer)
 		{
 			try
 			{
-				await _customerService.AddCustomersAsync(customerDTO);
+				await _customerService.AddCustomersAsync(customer);
 				return Ok();
 			}
 			catch (Exception ex)
@@ -44,7 +44,7 @@ namespace TableBookingSystem.Controllers
 			}
 		}
 		[HttpPatch("{customerId}")]
-		public async Task<ActionResult> UpdateCustomerInfo(int customerId, CustomerDTO customer)
+		public async Task<ActionResult> UpdateCustomerInfo(int customerId, CreateCustomerDTO customer)
 		{
 			try
 			{
@@ -75,7 +75,11 @@ namespace TableBookingSystem.Controllers
 			try
 			{
 				var customer = await _customerService.GetCustomerByIdAsync(customerId);
-				return customer == null ? NotFound() : Ok(customer);
+				if (customer == null)
+				{
+					return NotFound();
+				}
+				return Ok(customer);
 			}
 			catch (Exception ex)
 			{

@@ -16,7 +16,7 @@ namespace TableBookingSystem.Services
 			_customerRepo = customerRepo;
 			_mapper = mapper;
         }
-        public async Task AddCustomersAsync(CustomerDTO customer)
+        public async Task AddCustomersAsync(CreateCustomerDTO customer)
 		{
 			var newCustomer = _mapper.Map<Customer>(customer);
 			await _customerRepo.AddCustomersAsync(newCustomer);
@@ -30,7 +30,7 @@ namespace TableBookingSystem.Services
 				_customerRepo.DeleteCustomerAsync(customerId);
 			}
 		}
-		public async Task UpdateCustomerAsync(int customerId, CustomerDTO customerDTO)
+		public async Task UpdateCustomerAsync(int customerId, CreateCustomerDTO customerDTO)
 		{
 			var customer = await _customerRepo.GetCustomerByIdAsync(customerId);
 

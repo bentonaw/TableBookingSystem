@@ -7,8 +7,8 @@ namespace TableBookingSystem.Services.IService
 	{
 		Task<IEnumerable<CustomerViewModel>> GetAllCustomersAsync();
 		Task<CustomerViewModel> GetCustomerByIdAsync(int customerId);
-		Task AddCustomersAsync(CustomerDTO customer);
-		Task UpdateCustomerAsync(int customerId, CustomerDTO customer);
+		Task AddCustomersAsync(CreateCustomerDTO customer);
+		Task UpdateCustomerAsync(int customerId, CreateCustomerDTO customer);
 		Task DeleteCustomerAsync(int customerId);
 	}
 }
