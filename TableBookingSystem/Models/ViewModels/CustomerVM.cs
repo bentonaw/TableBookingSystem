@@ -1,8 +1,8 @@
-﻿namespace TableBookingSystem.Models.DTOs
+﻿namespace TableBookingSystem.Models.ViewModels
 {
-	public class CustomerDTO
+	public class CustomerVM
 	{
-		//public int CustomerId { get; set; }
+		public int CustomerId { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }

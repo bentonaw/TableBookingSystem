@@ -1,6 +1,6 @@
 ﻿namespace TableBookingSystem.Models.ViewModels
 {
-	public class MenuItemViewModel
+	public class MenuItemVM
 	{
 		public int MenuItemId { get; set; }
 		public string MenuItemName { get; set; }

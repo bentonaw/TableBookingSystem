@@ -6,10 +6,10 @@ namespace TableBookingSystem.Services.IService
 {
 	public interface IMenuService
 	{
-		Task<IEnumerable<MenuItemViewModel>> GetAllMenuItemsAsync();
-		Task<MenuItemViewModel> GetMenuItemByIdAsync(int menuItemId);
-		Task AddMenuItemAsync(MenuItemDTO menuItemDTO);
-		Task UpdateMenuItemAsync(int menuItemId, MenuItemDTO menuItem);
+		Task<IEnumerable<MenuItemVM>> GetAllMenuItemsAsync();
+		Task<MenuItemVM> GetMenuItemByIdAsync(int menuItemId);
+		Task AddMenuItemAsync(CreateMenuItemDTO menuItemDTO);
+		Task UpdateMenuItemAsync(int menuItemId, CreateMenuItemDTO menuItem);
 		Task DeleteMenuItemAsync(int menuItemId);
 
 	}

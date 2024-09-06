@@ -17,7 +17,8 @@ namespace TableBookingSystem.Services
 			_mapper = mapper;
         }
 
-		public async Task AddReservationAsync(ReservationDTO reservationDTO)
+
+		public async Task AddReservationAsync(CreateReservationDTO reservationDTO)
 		{
 			var newReservation = _mapper.Map<Reservation>(reservationDTO);
 			await _repo.AddReservationAsync(newReservation);
@@ -32,25 +33,25 @@ namespace TableBookingSystem.Services
 			}
 		}
 
-		public async Task<ReservationViewModel> GetReservationByIdAsync(int reservationId)
+		public async Task<ReservationVM> GetReservationByIdAsync(int reservationId)
 		{
 			var reservation = await _repo.GetReservationByIdAsync(reservationId);
-			return reservation != null ? _mapper.Map<ReservationViewModel>(reservation) : null;
+			return reservation != null ? _mapper.Map<ReservationVM>(reservation) : null;
 		}
 
-		public async Task<IEnumerable<ReservationViewModel>> GetReservationsByCustomerLastNameAsync(string lastName)
+		public async Task<IEnumerable<ReservationVM>> GetReservationsByCustomerLastNameAsync(string lastName)
 		{
 			var reservationList = await _repo.GetReservationsByCustomerLastNameAsync(lastName);
-			return _mapper.Map<IEnumerable<ReservationViewModel>>(reservationList);
+			return _mapper.Map<IEnumerable<ReservationVM>>(reservationList);
 		}
 
-		public async Task<IEnumerable<ReservationViewModel>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate)
+		public async Task<IEnumerable<ReservationVM>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate)
 		{
 			var reservationList = await _repo.GetReservationsByDateRangeAsync(startDate, endDate);
-			return _mapper.Map<IEnumerable<ReservationViewModel>>(reservationList);
+			return _mapper.Map<IEnumerable<ReservationVM>>(reservationList);
 		}
 		// Only allows for change of nr of seats
-		public async Task UpdateReservationAsync(int reservationId, ReservationDTO reservationDTO)
+		public async Task UpdateReservationAsync(int reservationId, CreateReservationDTO reservationDTO)
 		{
 			var reservation = await _repo.GetReservationByIdAsync(reservationId);
 			if (!int.IsPositive(reservationDTO.NrOfSeats))

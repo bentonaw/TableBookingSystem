@@ -5,10 +5,10 @@ namespace TableBookingSystem.Services.IService
 {
 	public interface ICustomerService
 	{
-		Task<IEnumerable<CustomerViewModel>> GetAllCustomersAsync();
-		Task<CustomerViewModel> GetCustomerByIdAsync(int customerId);
-		Task AddCustomersAsync(CustomerDTO customer);
-		Task UpdateCustomerAsync(int customerId, CustomerDTO customer);
+		Task<IEnumerable<CustomerVM>> GetAllCustomersAsync();
+		Task<CustomerVM> GetCustomerByIdAsync(int customerId);
+		Task AddCustomersAsync(CreateCustomerDTO customer);
+		Task UpdateCustomerAsync(int customerId, CreateCustomerDTO customer);
 		Task DeleteCustomerAsync(int customerId);
 	}
 }

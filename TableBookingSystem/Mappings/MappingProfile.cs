@@ -7,31 +7,25 @@ namespace TableBookingSystem.Mappings
 {
 	public class MappingProfile : Profile
 	{
-        public MappingProfile()
-        {
-            CreateMap<Customer, CustomerDTO>();
-            CreateMap<Customer, CustomerViewModel>();
-            CreateMap<CustomerDTO, Customer>();
-			CreateMap<CustomerDTO, CustomerViewModel>();
-			CreateMap<CustomerViewModel, Customer>();
-            CreateMap<CustomerViewModel, CustomerDTO>();
-            
-
-			CreateMap<Reservation, ReservationDTO>();
-			CreateMap<Reservation, ReservationViewModel>();
-			CreateMap<ReservationDTO, Reservation>();
-			CreateMap<ReservationDTO, ReservationViewModel>();
-			CreateMap<ReservationViewModel, Reservation>();
-			CreateMap<ReservationViewModel, ReservationDTO>();
-			
-			CreateMap<MenuItem, MenuItemDTO>();
-			CreateMap<MenuItem, MenuItemViewModel>();
-			CreateMap<MenuItemDTO, MenuItem>();
-			CreateMap<MenuItemDTO, MenuItemViewModel>();
-			CreateMap<MenuItemViewModel, MenuItem>();
-			CreateMap<MenuItemViewModel, MenuItemDTO>();
-			
-
+		public MappingProfile()
+		{
+			CreateMap<Customer, CreateCustomerDTO>();
+			CreateMap<Customer, CustomerVM>();
+			CreateMap<CreateCustomerDTO, Customer>();
+			CreateMap<CustomerVM, Customer>();
+			CreateMap<CreateCustomerDTO, CustomerVM>();
+			CreateMap<CreateReservationDTO, Reservation>();
+			CreateMap<Reservation, ReservationVM>()
+				.ForMember(c => c.CustomerVM, opt => opt.MapFrom(src => src.Customer))
+				.ForPath(ts => ts.TimeslotVM, opt => opt.MapFrom(src => src.Timeslot))
+				.ForPath(ts => ts.TimeslotVM.TimeSlotId, opt => opt.MapFrom(src => src.Timeslot.TimeSlotId))
+				.ForPath(ts => ts.TimeslotVM.StartTime, opt => opt.MapFrom(src => src.Timeslot.StartTime.ToString(@"hh\:mm")))
+				.ForPath(ts => ts.TimeslotVM.EndTime, opt => opt.MapFrom(src => src.Timeslot.EndTime.ToString(@"hh\:mm")))
+				.ForMember(dest => dest.FormattedReservationDate, opt => opt.MapFrom(src => src.ReservationDate.ToString("yyyy-MM-dd")));
+			CreateMap<Customer, ReservationCustomerVM>();
+			CreateMap<TimeSlot, TimeSlotVM>()
+			   .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ToString(@"hh\:mm")))
+			   .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ToString(@"hh\:mm")));
 		}
-    }
+	}
 }

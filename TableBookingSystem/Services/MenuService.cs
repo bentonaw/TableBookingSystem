@@ -17,7 +17,7 @@ namespace TableBookingSystem.Services
 			_mapper = mapper;
         }
 
-		public async Task AddMenuItemAsync(MenuItemDTO menuItem)
+		public async Task AddMenuItemAsync(CreateMenuItemDTO menuItem)
 		{
 			var newMenuItem = _mapper.Map<MenuItem>(menuItem);
 			await _menuRepo.AddMenuItemAsync(newMenuItem);
@@ -32,7 +32,7 @@ namespace TableBookingSystem.Services
 			}
 		}
 		
-		public async Task UpdateMenuItemAsync(int menuItemId, MenuItemDTO menuItemDTO)
+		public async Task UpdateMenuItemAsync(int menuItemId, CreateMenuItemDTO menuItemDTO)
 		{
 			var menuItem = await _menuRepo.GetMenuItemByIdAsync(menuItemId);
 			if (!string.IsNullOrEmpty(menuItemDTO.MenuItemName))
@@ -61,16 +61,16 @@ namespace TableBookingSystem.Services
 			}
 		}
 
-		public async Task<IEnumerable<MenuItemViewModel>> GetAllMenuItemsAsync()
+		public async Task<IEnumerable<MenuItemVM>> GetAllMenuItemsAsync()
 		{
 			var menuItemList = await _menuRepo.GetAllMenuItemsAsync();
-			return _mapper.Map<IEnumerable<MenuItemViewModel>>(menuItemList);
+			return _mapper.Map<IEnumerable<MenuItemVM>>(menuItemList);
 		}
 
-		public async Task<MenuItemViewModel> GetMenuItemByIdAsync(int menuItemId)
+		public async Task<MenuItemVM> GetMenuItemByIdAsync(int menuItemId)
 		{
 			var menuItem = await _menuRepo.GetMenuItemByIdAsync(menuItemId);
-			return menuItem != null ? _mapper.Map<MenuItemViewModel>(menuItem) : null;
+			return menuItem != null ? _mapper.Map<MenuItemVM>(menuItem) : null;
 		}
 	}
 }
