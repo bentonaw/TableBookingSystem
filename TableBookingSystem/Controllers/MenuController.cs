@@ -18,7 +18,7 @@ namespace TableBookingSystem.Controllers
 			_menuService = menuService;
 		}
 		[HttpPost]
-		public async Task<ActionResult> CreateMenuItem([FromBody] MenuItemDTO menuItemDTO)
+		public async Task<ActionResult> CreateMenuItem([FromBody] CreateMenuItemDTO menuItemDTO)
 		{
 			try
 			{
@@ -44,7 +44,7 @@ namespace TableBookingSystem.Controllers
 			}
 		}
 		[HttpPatch("{menuItemId}")]
-		public async Task<ActionResult> UpdateMenuItem(int menuItemId, MenuItemDTO menuItemDTO)
+		public async Task<ActionResult> UpdateMenuItem(int menuItemId, CreateMenuItemDTO menuItemDTO)
 		{
 			try
 			{
@@ -57,7 +57,7 @@ namespace TableBookingSystem.Controllers
 			}
 		}
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<MenuItemViewModel>>> ViewAllMenuItems()
+		public async Task<ActionResult<IEnumerable<MenuItemVM>>> ViewAllMenuItems()
 		{
 			try
 			{
@@ -70,7 +70,7 @@ namespace TableBookingSystem.Controllers
 			}
 		}
 		[HttpGet("{menuItemId}")]
-		public async Task<ActionResult<MenuItemViewModel>> GetMenuItemByIdAsync(int menuItemId)
+		public async Task<ActionResult<MenuItemVM>> GetMenuItemByIdAsync(int menuItemId)
 		{
 			try
 			{
