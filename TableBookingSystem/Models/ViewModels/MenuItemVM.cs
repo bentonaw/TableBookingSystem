@@ -9,5 +9,6 @@
 		public double Price { get; set; }
 		public string AllergyCaution { get; set; }
 		public int Quantity { get; set; }
+		public bool Available => Quantity > 0;
 	}
 }
