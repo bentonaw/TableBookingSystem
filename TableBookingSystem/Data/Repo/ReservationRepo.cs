@@ -30,7 +30,10 @@ namespace TableBookingSystem.Data.Repo
 
 		public async Task<Reservation> GetReservationByIdAsync(int reservationId)
 		{
-			var reservation = await _context.Reservations.FindAsync(reservationId);
+			var reservation = await _context.Reservations
+				.Include(r => r.Customer)
+				.Include(r => r.Timeslot)
+				.FirstOrDefaultAsync(r => r.ReservationId == reservationId);
 			return reservation;
 		}
 
@@ -38,6 +41,8 @@ namespace TableBookingSystem.Data.Repo
 		{
 			var reservations = await _context.Reservations
 				.Where(r => r.Customer.LastName.Contains(lastName))
+				.Include(r => r.Customer)
+				.Include(r => r.Timeslot)
 				.ToListAsync();
 			return reservations;
 		}

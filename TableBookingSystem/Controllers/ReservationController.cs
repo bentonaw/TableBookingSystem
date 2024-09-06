@@ -19,7 +19,7 @@ namespace TableBookingSystem.Controllers
 		}
 
 		[HttpGet("date-range")]
-		public async Task<ActionResult<IEnumerable<ReservationViewModel>>> GetReservationsByDateRange(DateTime startDate, DateTime endDate)
+		public async Task<ActionResult<IEnumerable<ReservationVM>>> GetReservationsByDateRange(DateTime startDate, DateTime endDate)
 		{
 			try
 			{
@@ -33,8 +33,8 @@ namespace TableBookingSystem.Controllers
 
 		}
 
-		[HttpGet("customer/{customerLastName}")]
-		public async Task<ActionResult<IEnumerable<ReservationViewModel>>> GetReservationsByCustomerId([FromQuery] string lastName)
+		[HttpGet("customer/{lastName}")]
+		public async Task<ActionResult<IEnumerable<ReservationVM>>> GetReservationsByCustomerId(string lastName)
 		{
 			try
 			{
@@ -52,7 +52,7 @@ namespace TableBookingSystem.Controllers
 		}
 
 		[HttpGet("{reservationId}")]
-		public async Task<ActionResult<ReservationViewModel>> GetReservationById(int reservationId)
+		public async Task<ActionResult<ReservationVM>> GetReservationById(int reservationId)
 		{
 			try
 			{
@@ -71,7 +71,7 @@ namespace TableBookingSystem.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateReservation([FromBody] ReservationDTO reservationDTO)
+		public async Task<ActionResult> CreateReservation([FromBody] CreateReservationDTO reservationDTO)
 		{
 			try
 			{
@@ -85,7 +85,7 @@ namespace TableBookingSystem.Controllers
 		}
 
 		[HttpPatch("{reservationId}")]
-		public async Task<ActionResult> UpdateReservation(int reservationId, [FromBody] ReservationDTO reservationDTO)
+		public async Task<ActionResult> UpdateReservation(int reservationId, [FromBody] CreateReservationDTO reservationDTO)
 		{
 			try
 			{
