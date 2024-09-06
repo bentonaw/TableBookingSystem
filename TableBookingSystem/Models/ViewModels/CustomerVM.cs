@@ -1,6 +1,6 @@
 ﻿namespace TableBookingSystem.Models.ViewModels
 {
-	public class CustomerViewModel
+	public class CustomerVM
 	{
 		public int CustomerId { get; set; }
 		public string FirstName { get; set; }

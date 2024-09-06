@@ -54,16 +54,16 @@ namespace TableBookingSystem.Services
 			await _customerRepo.UpdateCustomerAsync(customer);
 		}
 
-		public async Task<IEnumerable<CustomerViewModel>> GetAllCustomersAsync()
+		public async Task<IEnumerable<CustomerVM>> GetAllCustomersAsync()
 		{
 			var customersList = await _customerRepo.GetAllCustomersAsync();
-			return _mapper.Map<IEnumerable<CustomerViewModel>>(customersList);
+			return _mapper.Map<IEnumerable<CustomerVM>>(customersList);
 		}
 
-		public async Task<CustomerViewModel> GetCustomerByIdAsync(int customerId)
+		public async Task<CustomerVM> GetCustomerByIdAsync(int customerId)
 		{
 			var customer = await _customerRepo.GetCustomerByIdAsync(customerId);
-			return customer != null ? _mapper.Map<CustomerViewModel>(customer) : null;
+			return customer != null ? _mapper.Map<CustomerVM>(customer) : null;
 		}
 
 		

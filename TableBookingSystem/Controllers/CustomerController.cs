@@ -57,7 +57,7 @@ namespace TableBookingSystem.Controllers
 			}
 		}
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<CustomerViewModel>>> ViewAllCustomers()
+		public async Task<ActionResult<IEnumerable<CustomerVM>>> ViewAllCustomers()
 		{
 			try
 			{
