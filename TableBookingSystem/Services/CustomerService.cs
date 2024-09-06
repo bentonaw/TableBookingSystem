@@ -27,7 +27,7 @@ namespace TableBookingSystem.Services
 			var customer = await _customerRepo.GetCustomerByIdAsync(customerId);
 			if (customer != null)
 			{
-				_customerRepo.DeleteCustomerAsync(customerId);
+				await _customerRepo.DeleteCustomerAsync(customerId);
 			}
 		}
 		public async Task UpdateCustomerAsync(int customerId, CreateCustomerDTO customerDTO)

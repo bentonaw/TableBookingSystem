@@ -29,7 +29,7 @@ namespace TableBookingSystem.Services
 			var reservation = await _repo.GetReservationByIdAsync(reservationId);
 			if (reservation != null)
 			{
-				_repo.DeleteReservationAsync(reservationId);
+				await _repo.DeleteReservationAsync(reservationId);
 			}
 		}
 
