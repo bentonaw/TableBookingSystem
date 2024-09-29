@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TableBookingSystem.Models.DTOs;
-using TableBookingSystem.Models.ViewModels;
 using TableBookingSystem.Models;
 using TableBookingSystem.Services.IService;
 using System.Reflection.Metadata.Ecma335;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace TableBookingSystem.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class MenuController : ControllerBase
 	{
@@ -57,7 +56,7 @@ namespace TableBookingSystem.Controllers
 			}
 		}
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<MenuItemVM>>> ViewAllMenuItems()
+		public async Task<ActionResult<IEnumerable<GetMenuItemDTO>>> ViewAllMenuItems()
 		{
 			try
 			{
@@ -70,7 +69,7 @@ namespace TableBookingSystem.Controllers
 			}
 		}
 		[HttpGet("{menuItemId}")]
-		public async Task<ActionResult<MenuItemVM>> GetMenuItemByIdAsync(int menuItemId)
+		public async Task<ActionResult<GetMenuItemDTO>> GetMenuItemByIdAsync(int menuItemId)
 		{
 			try
 			{

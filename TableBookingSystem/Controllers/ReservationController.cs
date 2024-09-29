@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TableBookingSystem.Models;
 using TableBookingSystem.Models.DTOs;
-using TableBookingSystem.Models.ViewModels;
 using TableBookingSystem.Services;
 using TableBookingSystem.Services.IService;
 
 namespace TableBookingSystem.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class ReservationController : ControllerBase
 	{
@@ -19,7 +18,7 @@ namespace TableBookingSystem.Controllers
 		}
 
 		[HttpGet("date-range")]
-		public async Task<ActionResult<IEnumerable<ReservationVM>>> GetReservationsByDateRange(DateTime startDate, DateTime endDate)
+		public async Task<ActionResult<IEnumerable<GetReservationDTO>>> GetReservationsByDateRange(DateTime startDate, DateTime endDate)
 		{
 			try
 			{
@@ -34,7 +33,7 @@ namespace TableBookingSystem.Controllers
 		}
 
 		[HttpGet("customer/{lastName}")]
-		public async Task<ActionResult<IEnumerable<ReservationVM>>> GetReservationsByCustomerId(string lastName)
+		public async Task<ActionResult<IEnumerable<GetReservationDTO>>> GetReservationsByCustomerId(string lastName)
 		{
 			try
 			{
@@ -52,7 +51,7 @@ namespace TableBookingSystem.Controllers
 		}
 
 		[HttpGet("{reservationId}")]
-		public async Task<ActionResult<ReservationVM>> GetReservationById(int reservationId)
+		public async Task<ActionResult<GetReservationDTO>> GetReservationById(int reservationId)
 		{
 			try
 			{

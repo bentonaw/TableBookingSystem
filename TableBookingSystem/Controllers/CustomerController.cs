@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TableBookingSystem.Models.DTOs;
-using TableBookingSystem.Models.ViewModels;
 using TableBookingSystem.Services.IService;
 
 namespace TableBookingSystem.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class CustomerController : ControllerBase
 	{
@@ -57,7 +56,7 @@ namespace TableBookingSystem.Controllers
 			}
 		}
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<CustomerVM>>> ViewAllCustomers()
+		public async Task<ActionResult<IEnumerable<GetCustomerDTO>>> ViewAllCustomers()
 		{
 			try
 			{

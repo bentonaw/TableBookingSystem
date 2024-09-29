@@ -2,12 +2,11 @@
 using TableBookingSystem.Data.Repo.IRepo;
 using TableBookingSystem.Models;
 using TableBookingSystem.Models.DTOs;
-using TableBookingSystem.Models.ViewModels;
 using TableBookingSystem.Services.IService;
 
 namespace TableBookingSystem.Services
 {
-	public class MenuService : IMenuService
+    public class MenuService : IMenuService
 	{
 		private readonly IMenuRepo _menuRepo;
 		private readonly IMapper _mapper;
@@ -61,16 +60,16 @@ namespace TableBookingSystem.Services
 			}
 		}
 
-		public async Task<IEnumerable<MenuItemVM>> GetAllMenuItemsAsync()
+		public async Task<IEnumerable<GetMenuItemDTO>> GetAllMenuItemsAsync()
 		{
 			var menuItemList = await _menuRepo.GetAllMenuItemsAsync();
-			return _mapper.Map<IEnumerable<MenuItemVM>>(menuItemList);
+			return _mapper.Map<IEnumerable<GetMenuItemDTO>>(menuItemList);
 		}
 
-		public async Task<MenuItemVM> GetMenuItemByIdAsync(int menuItemId)
+		public async Task<GetMenuItemDTO> GetMenuItemByIdAsync(int menuItemId)
 		{
 			var menuItem = await _menuRepo.GetMenuItemByIdAsync(menuItemId);
-			return menuItem != null ? _mapper.Map<MenuItemVM>(menuItem) : null;
+			return menuItem != null ? _mapper.Map<GetMenuItemDTO>(menuItem) : null;
 		}
 	}
 }
