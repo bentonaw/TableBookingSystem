@@ -2,12 +2,11 @@
 using TableBookingSystem.Data.Repo.IRepo;
 using TableBookingSystem.Models;
 using TableBookingSystem.Models.DTOs;
-using TableBookingSystem.Models.ViewModels;
 using TableBookingSystem.Services.IService;
 
 namespace TableBookingSystem.Services
 {
-	public class ReservationService : IReservationService
+    public class ReservationService : IReservationService
 	{
 		private readonly IReservationRepo _repo;
 		private readonly IMapper _mapper;
@@ -33,22 +32,22 @@ namespace TableBookingSystem.Services
 			}
 		}
 
-		public async Task<ReservationVM> GetReservationByIdAsync(int reservationId)
+		public async Task<GetReservationDTO> GetReservationByIdAsync(int reservationId)
 		{
 			var reservation = await _repo.GetReservationByIdAsync(reservationId);
-			return reservation != null ? _mapper.Map<ReservationVM>(reservation) : null;
+			return reservation != null ? _mapper.Map<GetReservationDTO>(reservation) : null;
 		}
 
-		public async Task<IEnumerable<ReservationVM>> GetReservationsByCustomerLastNameAsync(string lastName)
+		public async Task<IEnumerable<GetReservationDTO>> GetReservationsByCustomerLastNameAsync(string lastName)
 		{
 			var reservationList = await _repo.GetReservationsByCustomerLastNameAsync(lastName);
-			return _mapper.Map<IEnumerable<ReservationVM>>(reservationList);
+			return _mapper.Map<IEnumerable<GetReservationDTO>>(reservationList);
 		}
 
-		public async Task<IEnumerable<ReservationVM>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate)
+		public async Task<IEnumerable<GetReservationDTO>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate)
 		{
 			var reservationList = await _repo.GetReservationsByDateRangeAsync(startDate, endDate);
-			return _mapper.Map<IEnumerable<ReservationVM>>(reservationList);
+			return _mapper.Map<IEnumerable<GetReservationDTO>>(reservationList);
 		}
 		// Only allows for change of nr of seats
 		public async Task UpdateReservationAsync(int reservationId, CreateReservationDTO reservationDTO)
