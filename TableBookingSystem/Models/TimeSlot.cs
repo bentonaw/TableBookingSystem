@@ -10,6 +10,8 @@ namespace TableBookingSystem.Models
 		[Required]
 		public int TimeSlotNr { get; set; }
 		[Required]
+		public bool LunchTime { get; set; }
+		[Required]
 		public TimeSpan StartTime { get; set; }
 		[Required]
 		public TimeSpan EndTime { get; set; }
