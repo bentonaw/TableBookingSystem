@@ -24,6 +24,7 @@ namespace TableBookingSystem.Mappings
 			CreateMap<TimeSlot, GetTimeSlotDTO>()
 			   .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ToString(@"hh\:mm")))
 			   .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ToString(@"hh\:mm")));
+			CreateMap<GetTimeSlotDTO, TimeSlot>();
 			CreateMap<CreateMenuItemDTO, MenuItem>();
 			CreateMap<MenuItem, CreateMenuItemDTO>();
 			CreateMap<MenuItem, GetMenuItemDTO>();

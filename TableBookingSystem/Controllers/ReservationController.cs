@@ -68,6 +68,23 @@ namespace TableBookingSystem.Controllers
 			}
 
 		}
+		[HttpGet("Timeslots")]
+		public async Task<ActionResult<IEnumerable<GetTimeSlotDTO>>> GetTimeSlots()
+		{
+            try
+            {
+                var timeslots = await _reservationService.GetTimeSlotAsync();
+                if (timeslots == null)
+                {
+                    return NotFound();
+                }
+                return Ok(timeslots);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
 
 		[HttpPost]
 		public async Task<ActionResult> CreateReservation([FromBody] CreateReservationDTO reservationDTO)

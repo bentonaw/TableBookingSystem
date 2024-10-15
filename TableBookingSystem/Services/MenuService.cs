@@ -71,5 +71,65 @@ namespace TableBookingSystem.Services
 			var menuItem = await _menuRepo.GetMenuItemByIdAsync(menuItemId);
 			return menuItem != null ? _mapper.Map<GetMenuItemDTO>(menuItem) : null;
 		}
-	}
+
+		// menu
+        
+        public async Task<IEnumerable<GetMenuDTO>> GetAllMenusAsync()
+        {
+            var menus = await _menuRepo.GetAllMenusAsync();
+            return _mapper.Map<IEnumerable<GetMenuDTO>>(menus);
+        }
+
+        public async Task<GetMenuDTO> GetMenuByIdAsync(int menuId)
+        {
+            var menu = await _menuRepo.GetMenuByIdAsync(menuId);
+            return menu != null ? _mapper.Map<GetMenuDTO>(menu) : null;
+        }
+        public async Task AddItemToMenuAsync(int menuId, int menuItemId)
+        {
+            var menu = await _menuRepo.GetMenuByIdAsync(menuId);
+            if (menu != null)
+            {
+                var menuItem = await _menuRepo.GetMenuItemByIdAsync(menuItemId);
+                if (menuItem != null)
+                {
+                    await _menuRepo.AddItemToMenuAsync(menu, menuItemId);
+                }
+                else
+                {
+                    throw new ArgumentException("Menu already contains this menu item");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Menu not found");
+            }
+        }
+        public async Task DeleteItemFromMenuAsync(int menuId, int menuItemId)
+        {
+            var menu = await _menuRepo.GetMenuByIdAsync(menuId);
+            if (menu != null)
+            {
+                var menuItemToRemove = await _menuRepo.GetMenuItemByIdAsync(menuItemId);
+                if (menuItemToRemove != null)
+                {
+					await _menuRepo.DeleteItemFromMenuAsync(menu, menuItemId);
+                }
+                else
+                {
+                    throw new ArgumentException("Menu item not found");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Menu not found");
+            }
+        }
+
+        public async Task CreateMenuAsync(CreateMenuDTO menuDTO)
+        {
+            var newMenu = _mapper.Map<Menu>(menuDTO);
+            await _menuRepo.AddMenuAsync(newMenu);
+        }
+    }
 }

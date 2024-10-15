@@ -55,7 +55,14 @@ namespace TableBookingSystem.Data.Repo
 			return reservations;
 		}
 
-		public async Task UpdateReservationAsync(Reservation reservation)
+        public async Task<IEnumerable<TimeSlot>> GetTimeSlotAsync()
+        {
+			var timeslots = await _context.TimeSlots
+				.ToListAsync();
+			return timeslots;
+        }
+
+        public async Task UpdateReservationAsync(Reservation reservation)
 		{
 			_context.Reservations.Update(reservation);
 			await _context.SaveChangesAsync();
