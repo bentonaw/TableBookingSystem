@@ -89,7 +89,7 @@ namespace TableBookingSystem.Data.Repo
         // can be extracted into seperate repo
         public async Task<IEnumerable<TimeSlot>> GetAllTimeslots()
         {
-            var timeSlots = await _context.TimeSlot
+            var timeSlots = await _context.TimeSlots
                 .ToListAsync();
             return timeSlots;
         }

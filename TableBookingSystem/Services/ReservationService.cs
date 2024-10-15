@@ -49,8 +49,15 @@ namespace TableBookingSystem.Services
 			var reservationList = await _repo.GetReservationsByDateRangeAsync(startDate, endDate);
 			return _mapper.Map<IEnumerable<GetReservationDTO>>(reservationList);
 		}
-		// Only allows for change of nr of seats
-		public async Task UpdateReservationAsync(int reservationId, CreateReservationDTO reservationDTO)
+
+        public async Task<IEnumerable<GetTimeSlotDTO>> GetTimeSlotAsync()
+        {
+			var timeslotList = await _repo.GetTimeSlotAsync();
+			return _mapper.Map<IEnumerable<GetTimeSlotDTO>>(timeslotList);
+        }
+
+        // Only allows for change of nr of seats
+        public async Task UpdateReservationAsync(int reservationId, CreateReservationDTO reservationDTO)
 		{
 			var reservation = await _repo.GetReservationByIdAsync(reservationId);
 			if (!int.IsPositive(reservationDTO.NrOfSeats))
