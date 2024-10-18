@@ -21,12 +21,24 @@ namespace TableBookingSystem
 				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 			});
 
-			// Add services to the container.
+            
 
-			services.AddControllers();
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            // Add services to the container.
 
-			services.AddEndpointsApiExplorer();
+            services.AddControllers();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("LocalReact", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5174/")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
+            services.AddEndpointsApiExplorer();
 			services.AddSwaggerGen();
 
 			services.AddScoped<ICustomerRepo, CustomerRepo>();
@@ -41,8 +53,10 @@ namespace TableBookingSystem
 
 			var app = builder.Build();
 
-			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
+            app.UseCors("LocalReact");
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
 			{
 				app.UseSwagger();
 				app.UseSwaggerUI();
