@@ -32,7 +32,7 @@ namespace TableBookingSystem
             {
                 options.AddPolicy("LocalReact", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5174/")
+                    policy.WithOrigins("http://localhost:5173")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -47,6 +47,7 @@ namespace TableBookingSystem
 			services.AddScoped<IReservationService, ReservationService>();
 			services.AddScoped<IMenuRepo, MenuRepo>();
 			services.AddScoped<IMenuService, MenuService>();
+			services.AddScoped<ITableReservationRepo, TableReservationRepo>();
 
 
 			services.AddAutoMapper(typeof(MappingProfile).Assembly);

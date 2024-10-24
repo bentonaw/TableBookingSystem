@@ -91,5 +91,12 @@ namespace TableBookingSystem.Data.Repo
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Table> GetTableByIdAsync(int tableId)
+        {
+            return await _context.Tables
+                .Include(t => t.TableId)
+                .FirstOrDefaultAsync(t => t.TableId == tableId);
+        }
     }
 }
