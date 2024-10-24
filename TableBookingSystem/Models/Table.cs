@@ -8,6 +8,6 @@ namespace TableBookingSystem.Models
         public int TableId { get; set; }
         public int TableNumber { get; set; }
         public int Capacity { get; set; } // reservation will have to check against this for each check
-        public bool Communal { get; set; }
+        public bool IsCommunal { get; set; }
     }
 }
