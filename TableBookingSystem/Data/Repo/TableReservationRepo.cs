@@ -4,13 +4,13 @@ using TableBookingSystem.Models;
 
 namespace TableBookingSystem.Data.Repo
 {
-	public class TableReservationRepo : ITableReservationRepo
-	{
-		private readonly TableBookingSystemContext _context;
-		public TableReservationRepo(TableBookingSystemContext context)
-		{
-			_context = context;
-		}
+    public class TableReservationRepo : ITableReservationRepo
+    {
+        private readonly TableBookingSystemContext _context;
+        public TableReservationRepo(TableBookingSystemContext context)
+        {
+            _context = context;
+        }
 
         //public async Task<IEnumerable<DateTime>> GetUnavailableDates(int nrOfSeats)
         //{
@@ -26,7 +26,7 @@ namespace TableBookingSystem.Data.Repo
         //        .ToListAsync();
 
         //    // Get dates where all tables are booked for all timeslots
-        //    var fullyBookedDates = await _context.Reservations
+        //var fullyBookedDates = await _context.Reservations
         //        .GroupBy(r => r.ReservationDate)
         //        .Where(g => g.SelectMany(r => r.TableReservations).Count() == _context.Tables.Count() * timeSlots.Count)
         //        .Select(g => g.Key)
@@ -46,19 +46,19 @@ namespace TableBookingSystem.Data.Repo
         //    return unavailableDates;
         //}
 
-  //      public async Task<IEnumerable<Table>> GetAvailableTablesForTimeSlot(int nrOfSeats, DateTime date, int timeSlotId)
-		//{
-  //          var reservedTableIds = await _context.TableReservations
-  //              .Where(tr => tr.Reservation.ReservationDate == date && tr.Reservation.TimeSlotId == timeSlotId)
-  //              .Select(tr => tr.TableId)
-  //              .ToListAsync();
+        //      public async Task<IEnumerable<Table>> GetAvailableTablesForTimeSlot(int nrOfSeats, DateTime date, int timeSlotId)
+        //{
+        //          var reservedTableIds = await _context.TableReservations
+        //              .Where(tr => tr.Reservation.ReservationDate == date && tr.Reservation.TimeSlotId == timeSlotId)
+        //              .Select(tr => tr.TableId)
+        //              .ToListAsync();
 
-  //          var availableTables = await _context.Tables
-  //              .Where(t => !reservedTableIds.Contains(t.TableId) && t.Capacity >= nrOfSeats)
-  //              .ToListAsync();
+        //          var availableTables = await _context.Tables
+        //              .Where(t => !reservedTableIds.Contains(t.TableId) && t.Capacity >= nrOfSeats)
+        //              .ToListAsync();
 
-  //          return availableTables;
-  //      }
+        //          return availableTables;
+        //      }
 
 
         public async Task<IEnumerable<DateTime>> GetAllDatesWithReservationsFromToday()
@@ -98,6 +98,11 @@ namespace TableBookingSystem.Data.Repo
             var tables = await _context.Tables
                 .ToListAsync();
             return tables;
+        }
+
+        public Task<Table> GetTableByIdAsync(int tableId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

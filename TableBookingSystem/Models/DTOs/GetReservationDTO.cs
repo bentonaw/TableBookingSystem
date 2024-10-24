@@ -8,7 +8,7 @@ namespace TableBookingSystem.Models.DTOs
         public int ReservationId { get; set; }
         public GetCustomerDTO Customer { get; set; }
         public GetTimeSlotDTO TimeSlot { get; set; }
-        public ICollection<TableReservation> TableReservations { get; set; }
+        //public ICollection<TableReservation> TableReservations { get; set; }
         public int NrOfSeats { get; set; }
         [JsonIgnore]
         public DateTime ReservationDate { get; set; }

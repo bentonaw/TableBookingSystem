@@ -10,10 +10,12 @@ namespace TableBookingSystem.Models.DTOs
 		//public Customer Customer { get; set; }
 
 		public int TimeSlotId { get; set; }
-		//public TimeSlot Timeslot { get; set; }
-		////public ICollection<TableReservation> TableReservations { get; set; } 
-		// will create automatic function that checks available tables
-		public int NrOfSeats { get; set; }
+        //public TimeSlot Timeslot { get; set; }
+        ////public ICollection<TableReservation> TableReservations { get; set; } 
+        // will create automatic function that checks available tables
+
+        public int TableId { get; set; }
+        public int NrOfSeats { get; set; }
 		[DataType(DataType.Date)]
 		public DateTime ReservationDate { get; set; }
 	}

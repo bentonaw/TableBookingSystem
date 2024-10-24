@@ -67,5 +67,13 @@ namespace TableBookingSystem.Data.Repo
 			_context.Reservations.Update(reservation);
 			await _context.SaveChangesAsync();
 		}
-	}
+
+        public async Task<IEnumerable<Reservation>> GetReservationsForTableAsync(int tableId, DateTime date, int timeslotId)
+        {
+            var tableReservations = await _context.Reservations
+                .Where(tr => tr.TableId == tableId && tr.ReservationDate.Date == date.Date && tr.TimeSlotId == timeslotId)
+                .ToListAsync();
+			return tableReservations;
+        }
+    }
 }

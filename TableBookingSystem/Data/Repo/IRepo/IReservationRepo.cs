@@ -12,5 +12,6 @@ namespace TableBookingSystem.Data.Repo.IRepo
 		Task AddReservationAsync(Reservation reservation);
 		Task UpdateReservationAsync(Reservation reservation);
 		Task DeleteReservationAsync(int reservationId);
-	}
+        Task<IEnumerable<Reservation>> GetReservationsForTableAsync(int tableId, DateTime date, int timeslotId);
+    }
 }
