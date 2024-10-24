@@ -13,7 +13,7 @@ namespace TableBookingSystem.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Table> Tables { get; set; }
-        public DbSet<TableReservation> TableReservations { get; set; }
+        //public DbSet<TableReservation> TableReservations { get; set; }
         public DbSet<TimeSlot> TimeSlots { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }
@@ -24,12 +24,12 @@ namespace TableBookingSystem.Data
 
             modelBuilder.Entity<Table>().HasData
             (
-                new Table { TableId = 1, TableNumber = 1, Capacity = 8, Communal = true },
-                new Table { TableId = 2, TableNumber = 2, Capacity = 4, Communal = false },
-                new Table { TableId = 3, TableNumber = 3, Capacity = 4, Communal = false },
-                new Table { TableId = 4, TableNumber = 4, Capacity = 2, Communal = false },
-                new Table { TableId = 5, TableNumber = 5, Capacity = 2, Communal = false },
-                new Table { TableId = 6, TableNumber = 6, Capacity = 2, Communal = false }
+                new Table { TableId = 1, TableNumber = 1, Capacity = 8, IsCommunal = true },
+                new Table { TableId = 2, TableNumber = 2, Capacity = 4, IsCommunal = false },
+                new Table { TableId = 3, TableNumber = 3, Capacity = 4, IsCommunal = false },
+                new Table { TableId = 4, TableNumber = 4, Capacity = 2, IsCommunal = false },
+                new Table { TableId = 5, TableNumber = 5, Capacity = 2, IsCommunal = false },
+                new Table { TableId = 6, TableNumber = 6, Capacity = 2, IsCommunal = false }
             );
 
             modelBuilder.Entity<TimeSlot>().HasData
