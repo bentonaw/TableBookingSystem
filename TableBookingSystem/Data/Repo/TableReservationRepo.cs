@@ -12,53 +12,78 @@ namespace TableBookingSystem.Data.Repo
             _context = context;
         }
 
-        //public async Task<IEnumerable<DateTime>> GetUnavailableDates(int nrOfSeats)
-        //{
-        //    // Get all dates with reservations
-        //    var reservationDates = await _context.Reservations
-        //        .Select(r => r.ReservationDate)
-        //        .Distinct()
-        //        .ToListAsync();
+        public async Task<IEnumerable<DateTime>> GetUnavailableDates(int nrOfSeats)
+        {
+            // Get all dates with reservations
+            var reservationDates = await _context.Reservations
+                .Select(r => r.ReservationDate)
+                .Distinct()
+                .ToListAsync();
 
-        //    // Get all timeslots
-        //    var timeSlots = await _context.TimeSlot
-        //        .Select(ts => ts.TimeSlotId)
-        //        .ToListAsync();
+            var unavailableDates = new List<DateTime>();
 
-        //    // Get dates where all tables are booked for all timeslots
-        //var fullyBookedDates = await _context.Reservations
-        //        .GroupBy(r => r.ReservationDate)
-        //        .Where(g => g.SelectMany(r => r.TableReservations).Count() == _context.Tables.Count() * timeSlots.Count)
-        //        .Select(g => g.Key)
-        //        .ToListAsync();
+            foreach (var date in reservationDates)
+            {
+                // Check each timeslot for this date
+                var timeslots = await _context.TimeSlots.ToListAsync();
+                var isDateFullyBooked = true;
 
-        //    // Get dates where no table has a capacity less than nrOfSeats
-        //    var insufficientCapacityDates = await _context.Tables
-        //        .Where(t => t.Capacity < nrOfSeats)
-        //        .SelectMany(t => t.TableReservations)
-        //        .Select(tr => tr.Reservation.ReservationDate)
-        //        .Distinct()
-        //        .ToListAsync();
+                foreach (var timeslot in timeslots)
+                {
+                    // Get available tables for this timeslot
+                    var availableTables = await GetAvailableTablesForTimeSlot(nrOfSeats, date, timeslot.TimeSlotId);
 
-        //    // Combine the results
-        //    var unavailableDates = fullyBookedDates.Union(insufficientCapacityDates).Distinct();
+                    if (availableTables.Any())
+                    {
+                        isDateFullyBooked = false;
+                        break;
+                    }
+                }
 
-        //    return unavailableDates;
-        //}
+                if (isDateFullyBooked)
+                {
+                    unavailableDates.Add(date);
+                }
+            }
 
-        //      public async Task<IEnumerable<Table>> GetAvailableTablesForTimeSlot(int nrOfSeats, DateTime date, int timeSlotId)
-        //{
-        //          var reservedTableIds = await _context.TableReservations
-        //              .Where(tr => tr.Reservation.ReservationDate == date && tr.Reservation.TimeSlotId == timeSlotId)
-        //              .Select(tr => tr.TableId)
-        //              .ToListAsync();
+            return unavailableDates;
+        }
 
-        //          var availableTables = await _context.Tables
-        //              .Where(t => !reservedTableIds.Contains(t.TableId) && t.Capacity >= nrOfSeats)
-        //              .ToListAsync();
+        public async Task<IEnumerable<Table>> GetAvailableTablesForTimeSlot(int nrOfSeats, DateTime date, int timeSlotId)
+        {
+            // Get all tables that have sufficient capacity
+            var suitableTables = await _context.Tables
+                .Where(t => t.Capacity >= nrOfSeats)
+                .ToListAsync();
 
-        //          return availableTables;
-        //      }
+            var availableTables = new List<Table>();
+
+            foreach (var table in suitableTables)
+            {
+                // Get existing reservations for this table, timeslot, and date
+                var existingReservations = await _context.Reservations
+                    .Where(r => r.TableId == table.TableId &&
+                               r.TimeSlotId == timeSlotId &&
+                               r.ReservationDate.Date == date.Date)
+                    .SumAsync(r => r.NrOfSeats);
+
+                // If communal table, check if there's enough remaining capacity
+                if (table.IsCommunal)
+                {
+                    if (table.Capacity - existingReservations >= nrOfSeats)
+                    {
+                        availableTables.Add(table);
+                    }
+                }
+                // For regular tables, check if the table is completely free
+                else if (existingReservations == 0)
+                {
+                    availableTables.Add(table);
+                }
+            }
+
+            return availableTables;
+        }
 
 
         public async Task<IEnumerable<DateTime>> GetAllDatesWithReservationsFromToday()
@@ -71,19 +96,66 @@ namespace TableBookingSystem.Data.Repo
         }
 
 
-        public Task DeleteTableReservations(int nrOfSeats, DateTime date, int timeslotId)
+        public async Task DeleteTableReservations(int nrOfSeats, DateTime date, int timeslotId)
         {
-            throw new NotImplementedException();
+            var reservationsToDelete = await _context.Reservations
+                .Where(r => r.TimeSlotId == timeslotId &&
+                           r.ReservationDate.Date == date.Date &&
+                           r.NrOfSeats == nrOfSeats)
+                .ToListAsync();
+
+            _context.Reservations.RemoveRange(reservationsToDelete);
+            await _context.SaveChangesAsync();
         }
 
-        public Task AddTableReservations(int nrOfSeats, DateTime date, int timeslotId)
+        public async Task AddTableReservations(int nrOfSeats, DateTime date, int timeslotId)
         {
-            throw new NotImplementedException();
+            var availableTables = await GetAvailableTablesForTimeSlot(nrOfSeats, date, timeslotId);
+            if (!availableTables.Any())
+            {
+                throw new InvalidOperationException("No available tables for the specified criteria.");
+            }
+
+            // Select the most appropriate table (smallest available that fits the party)
+            var selectedTable = availableTables
+                .OrderBy(t => t.Capacity)
+                .First();
+
+            var reservation = new Reservation
+            {
+                TableId = selectedTable.TableId,
+                TimeSlotId = timeslotId,
+                ReservationDate = date,
+                NrOfSeats = nrOfSeats
+            };
+
+            await _context.Reservations.AddAsync(reservation);
+            await _context.SaveChangesAsync();
         }
 
-        public Task UpdateTableReservations(int nrOfSeats, DateTime date, int timeslotId)
+        public async Task UpdateTableReservations(int nrOfSeats, DateTime date, int timeslotId)
         {
-            throw new NotImplementedException();
+            // First check if there's an available table for the new requirements
+            var availableTables = await GetAvailableTablesForTimeSlot(nrOfSeats, date, timeslotId);
+            if (!availableTables.Any())
+            {
+                throw new InvalidOperationException("No available tables for the updated reservation.");
+            }
+
+            var existingReservation = await _context.Reservations
+                .FirstOrDefaultAsync(r => r.TimeSlotId == timeslotId &&
+                                        r.ReservationDate.Date == date.Date);
+
+            if (existingReservation != null)
+            {
+                existingReservation.NrOfSeats = nrOfSeats;
+                existingReservation.TableId = availableTables.First().TableId;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("No existing reservation found to update.");
+            }
         }
 
         // can be extracted into seperate repo
@@ -100,9 +172,10 @@ namespace TableBookingSystem.Data.Repo
             return tables;
         }
 
-        public Task<Table> GetTableByIdAsync(int tableId)
+        public async Task<Table> GetTableByIdAsync(int tableId)
         {
-            throw new NotImplementedException();
+            return await _context.Tables
+                .FirstOrDefaultAsync(t => t.TableId == tableId);
         }
     }
 }
