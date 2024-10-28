@@ -44,7 +44,10 @@ namespace TableBookingSystem.Data.Repo
 			var customer = await _context.Customers.FindAsync(CustomerId);
 			return customer;
 		}
+        public async Task<Customer?> GetCustomerByEmailAsync(string email)
+        {
+            return await _context.Customers.FirstOrDefaultAsync(c => c.Email == email);
+        }
 
-
-	}
+    }
 }

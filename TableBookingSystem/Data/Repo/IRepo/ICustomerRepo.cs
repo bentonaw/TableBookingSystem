@@ -10,5 +10,7 @@ namespace TableBookingSystem.Data.Repo.IRepo
 		Task AddCustomersAsync(Customer customer);
 		Task UpdateCustomerAsync(Customer customer);
 		Task DeleteCustomerAsync(int customerId);
-	}
+		Task<Customer?> GetCustomerByEmailAsync(string email);
+
+    }
 }

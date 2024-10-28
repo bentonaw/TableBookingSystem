@@ -18,8 +18,27 @@ namespace TableBookingSystem.Models
         [Required]
         public DateTime ReservationDate { get; set; }
 
-        public Customer Customer { get; set; }
-        public TimeSlot Timeslot { get; set; }
-        
+        [Required]
+        [StringLength(50)]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string LastName { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [StringLength(100)]
+        public string Email { get; set; }
+
+        [Required]
+        [Phone]
+        [StringLength(20)]
+        public string PhoneNumber { get; set; }
+
+        public virtual Customer Customer { get; set; }
+        public virtual TimeSlot Timeslot { get; set; }
+        public virtual Table Table { get; set; }
+
     }
 }

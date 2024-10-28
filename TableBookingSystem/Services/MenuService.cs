@@ -42,17 +42,9 @@ namespace TableBookingSystem.Services
 			{
 				menuItem.MenuItemCategory = menuItemDTO.MenuItemCategory;
 			}
-			if (!string.IsNullOrEmpty(menuItemDTO.MenuItemType))
-			{
-				menuItem.MenuItemType = menuItemDTO.MenuItemType;
-			}
 			if (!double.IsNaN(menuItemDTO.Price))
 			{
 				menuItem.Price = menuItemDTO.Price;
-			}
-			if (!string.IsNullOrEmpty(menuItemDTO.AllergyCaution))
-			{
-				menuItem.AllergyCaution = menuItemDTO.AllergyCaution;
 			}
 			if (int.IsPositive(menuItemDTO.Quantity))
 			{

@@ -31,7 +31,7 @@ namespace TableBookingSystem.Data.Repo
 		public async Task<Reservation> GetReservationByIdAsync(int reservationId)
 		{
 			var reservation = await _context.Reservations
-				.Include(r => r.Customer)
+				.Include(r => r)
 				.Include(r => r.Timeslot)
 				.FirstOrDefaultAsync(r => r.ReservationId == reservationId);
 			return reservation;

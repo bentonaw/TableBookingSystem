@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TableBookingSystem.Models;
 using TableBookingSystem.Models.DTOs;
 using TableBookingSystem.Services;
@@ -69,12 +70,12 @@ namespace TableBookingSystem.Controllers
 
 		}
 		[HttpGet("Timeslots")]
-		public async Task<ActionResult<IEnumerable<GetTimeSlotDTO>>> GetTimeSlots()
-		{
+        public async Task<ActionResult<IEnumerable<GetTimeSlotDTO>>> GetTimeSlots([FromQuery] DateTime date, [FromQuery] int partySize)
+        {
             try
             {
-                var timeslots = await _reservationService.GetTimeSlotAsync();
-                if (timeslots == null)
+                var timeslots = await _reservationService.GetTimeSlotAsync(date, partySize);
+                if (timeslots == null || !timeslots.Any())
                 {
                     return NotFound();
                 }
@@ -86,21 +87,21 @@ namespace TableBookingSystem.Controllers
             }
         }
 
-		[HttpPost]
-		public async Task<ActionResult> CreateReservation([FromBody] CreateReservationDTO reservationDTO)
-		{
-			try
-			{
-				await _reservationService.AddReservationAsync(reservationDTO);
-				return Ok();
-			}
-			catch (Exception ex)
-			{
-				return StatusCode(500, $"An error occurred: {ex.Message}");
-			}
-		}
+        [HttpPost]
+        public async Task<ActionResult> CreateReservation([FromBody] CreateReservationDTO reservationDTO)
+        {
+            try
+            {
+                await _reservationService.AddReservationAsync(reservationDTO);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
 
-		[HttpPatch("{reservationId}")]
+        [HttpPatch("{reservationId}")]
 		public async Task<ActionResult> UpdateReservation(int reservationId, [FromBody] CreateReservationDTO reservationDTO)
 		{
 			try
