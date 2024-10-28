@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TableBookingSystem.Data.Repo;
 using TableBookingSystem.Data.Repo.IRepo;
 using TableBookingSystem.Models;
 using TableBookingSystem.Models.DTOs;
@@ -7,32 +8,71 @@ using TableBookingSystem.Services.IService;
 namespace TableBookingSystem.Services
 {
     public class ReservationService : IReservationService
-	{
-		private readonly IReservationRepo _repo;
-		private readonly ITableReservationRepo _tableRepo;
-		private readonly IMapper _mapper;
-        public ReservationService(IReservationRepo repo, IMapper mapper, ITableReservationRepo tableReservationRepo)
+    {
+        private readonly IReservationRepo _repo;
+        private readonly ITableReservationRepo _tableRepo;
+        private readonly IMapper _mapper;
+        private readonly ICustomerRepo _customerRepo;
+        public ReservationService(IReservationRepo repo, IMapper mapper, ITableReservationRepo tableReservationRepo, ICustomerRepo customerRepo)
         {
             _repo = repo;
-			_mapper = mapper;
-			_tableRepo = tableReservationRepo;
+            _mapper = mapper;
+            _tableRepo = tableReservationRepo;
+            _customerRepo = customerRepo;
         }
 
 
-		public async Task AddReservationAsync(CreateReservationDTO reservationDTO)
-		{
-			var newReservation = _mapper.Map<Reservation>(reservationDTO);
-			await _repo.AddReservationAsync(newReservation);
-		}
+        //public async Task AddReservationAsync(CreateReservationDTO reservationDTO)
+        //{
+        //    var newReservation = _mapper.Map<Reservation>(reservationDTO);
+        //    await _repo.AddReservationAsync(newReservation);
+        //}
 
-		public async Task DeleteReservationAsync(int reservationId)
-		{
-			var reservation = await _repo.GetReservationByIdAsync(reservationId);
-			if (reservation != null)
-			{
-				await _repo.DeleteReservationAsync(reservationId);
-			}
-		}
+        public async Task AddReservationAsync(CreateReservationDTO reservationDTO)
+        {
+            // Check if the customer already exists
+            var existingCustomer = await _customerRepo.GetCustomerByEmailAsync(reservationDTO.Email);
+
+            int customerId;
+
+            if (existingCustomer == null)
+            {
+                // Create a new customer
+                var newCustomer = _mapper.Map<Customer>(reservationDTO);
+                await _customerRepo.AddCustomersAsync(newCustomer);
+                customerId = newCustomer.CustomerId;
+            }
+            else
+            {
+                customerId = existingCustomer.CustomerId;
+            }
+
+            // Find the first available table
+            var tables = await _tableRepo.GetAllTables();
+            var availableTable = await FindFirstAvailableTableAsync(tables, reservationDTO.ReservationDate, reservationDTO.TimeSlotId, reservationDTO.NrOfSeats);
+
+            if (availableTable == null)
+            {
+                throw new Exception("No available table found.");
+            }
+
+            // Create the reservation
+            var reservation = _mapper.Map<Reservation>(reservationDTO);
+            reservation.CustomerId = customerId;
+            reservation.TableId = availableTable.TableId;
+
+
+            await _repo.AddReservationAsync(reservation);
+        }
+
+        public async Task DeleteReservationAsync(int reservationId)
+        {
+            var reservation = await _repo.GetReservationByIdAsync(reservationId);
+            if (reservation != null)
+            {
+                await _repo.DeleteReservationAsync(reservationId);
+            }
+        }
 
         public async Task<GetReservationDTO?> GetReservationByIdAsync(int reservationId)
         {
@@ -40,33 +80,54 @@ namespace TableBookingSystem.Services
             return reservation != null ? _mapper.Map<GetReservationDTO>(reservation) : null;
         }
 
-		public async Task<IEnumerable<GetReservationDTO>> GetReservationsByCustomerLastNameAsync(string lastName)
-		{
-			var reservationList = await _repo.GetReservationsByCustomerLastNameAsync(lastName);
-			return _mapper.Map<IEnumerable<GetReservationDTO>>(reservationList);
-		}
-
-		public async Task<IEnumerable<GetReservationDTO>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate)
-		{
-			var reservationList = await _repo.GetReservationsByDateRangeAsync(startDate, endDate);
-			return _mapper.Map<IEnumerable<GetReservationDTO>>(reservationList);
-		}
-
-        public async Task<IEnumerable<GetTimeSlotDTO>> GetTimeSlotAsync()
+        public async Task<IEnumerable<GetReservationDTO>> GetReservationsByCustomerLastNameAsync(string lastName)
         {
-			var timeslotList = await _repo.GetTimeSlotAsync();
-			return _mapper.Map<IEnumerable<GetTimeSlotDTO>>(timeslotList);
+            var reservationList = await _repo.GetReservationsByCustomerLastNameAsync(lastName);
+            return _mapper.Map<IEnumerable<GetReservationDTO>>(reservationList);
+        }
+
+        public async Task<IEnumerable<GetReservationDTO>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            var reservationList = await _repo.GetReservationsByDateRangeAsync(startDate, endDate);
+            return _mapper.Map<IEnumerable<GetReservationDTO>>(reservationList);
+        }
+
+        public async Task<IEnumerable<GetTimeSlotDTO>> GetTimeSlotAsync(DateTime date, int partySize)
+        {
+            // Fetch all time slots
+            var allTimeSlots = await _repo.GetTimeSlotAsync();
+
+            // List to hold available time slots
+            var availableTimeSlots = new List<TimeSlot>();
+
+            // Check each time slot for table availability
+            foreach (var timeSlot in allTimeSlots)
+            {
+                // Fetch all tables
+                var allTables = await _tableRepo.GetAllTables();
+
+                // Check if any table is available for the given date, time slot, and party size
+                bool isAvailable = allTables.Any(table => IsTableAvailable(table.TableId, date, timeSlot.TimeSlotId, partySize).Result);
+
+                if (isAvailable)
+                {
+                    availableTimeSlots.Add(timeSlot);
+                }
+            }
+
+            // Map the available time slots to DTOs
+            return _mapper.Map<IEnumerable<GetTimeSlotDTO>>(availableTimeSlots);
         }
 
         // Only allows for change of nr of seats
         public async Task UpdateReservationAsync(int reservationId, CreateReservationDTO reservationDTO)
-		{
-			var reservation = await _repo.GetReservationByIdAsync(reservationId);
-			if (!int.IsPositive(reservationDTO.NrOfSeats))
-			{
-				reservation.NrOfSeats = reservationDTO.NrOfSeats;
-			}
-		}
+        {
+            var reservation = await _repo.GetReservationByIdAsync(reservationId);
+            if (!int.IsPositive(reservationDTO.NrOfSeats))
+            {
+                reservation.NrOfSeats = reservationDTO.NrOfSeats;
+            }
+        }
 
         public async Task<Reservation> AssignTableAsync(int customerId, int timeslotId, int seats, DateTime date)
         {
@@ -75,7 +136,7 @@ namespace TableBookingSystem.Services
             // If single person, prioritize communal table
             if (seats == 1)
             {
-                
+
                 var availableCommunalTable = await FindFirstAvailableTableAsync(tables.Where(t => t.IsCommunal), date, timeslotId, seats);
                 if (availableCommunalTable != null)
                 {
@@ -118,8 +179,6 @@ namespace TableBookingSystem.Services
             // Create the DTO based on the provided parameters
             var reservationDTO = new CreateReservationDTO
             {
-                CustomerId = customerId,
-                TableId = tableId,
                 NrOfSeats = seats,
                 ReservationDate = date,
                 TimeSlotId = timeslotId
@@ -131,16 +190,32 @@ namespace TableBookingSystem.Services
             // Optional: You might want to return the created Reservation object or its ID
             return _mapper.Map<Reservation>(reservationDTO);
         }
+
         private async Task<Table?> FindFirstAvailableTableAsync(IEnumerable<Table> tables, DateTime date, int timeslotId, int requiredSeats)
         {
+            Table? firstSuitableTable = null;
+
             foreach (var table in tables)
             {
-                if (await IsTableAvailable(table.TableId, date, timeslotId, requiredSeats))
+                if (table.Capacity >= requiredSeats)
                 {
-                    return table;
+                    var reservations = await _repo.GetReservationsForTableAsync(table.TableId, date, timeslotId);
+
+                    // Check if the table has no reservations
+                    if (!reservations.Any())
+                    {
+                        return table;
+                    }
+
+                    // Store the first suitable table if it's not available
+                    if (firstSuitableTable == null)
+                    {
+                        firstSuitableTable = table;
+                    }
                 }
             }
-            return null;
+            // If no available table is found, return the first suitable one
+            return firstSuitableTable;
         }
 
     }
