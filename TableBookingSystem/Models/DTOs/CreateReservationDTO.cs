@@ -6,17 +6,33 @@ namespace TableBookingSystem.Models.DTOs
 	// Simplified CreateReservationDTO for easier use with frontend UI
 	public class CreateReservationDTO
 	{
-		public int CustomerId { get; set; }
-		//public Customer Customer { get; set; }
-
+        [Required]
+        public int CustomerId { get; set; } 
+		[Required]
 		public int TimeSlotId { get; set; }
-        //public TimeSlot Timeslot { get; set; }
-        ////public ICollection<TableReservation> TableReservations { get; set; } 
-        // will create automatic function that checks available tables
-
+        [Required]
         public int TableId { get; set; }
+
+        [Required]
         public int NrOfSeats { get; set; }
 		[DataType(DataType.Date)]
 		public DateTime ReservationDate { get; set; }
-	}
+        [Required]
+        [StringLength(50)]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string LastName { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [StringLength(100)]
+        public string Email { get; set; }
+
+        [Required]
+        [Phone]
+        [StringLength(20)]
+        public string PhoneNumber { get; set; }
+    }
 }
