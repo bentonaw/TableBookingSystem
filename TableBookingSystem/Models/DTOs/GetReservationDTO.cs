@@ -20,6 +20,10 @@ namespace TableBookingSystem.Models.DTOs
         public DateTime ReservationDate { get; set; }
         public string FormattedReservationDate => ReservationDate.ToString("yyyy-MM-dd");
 
-        
+        public virtual Customer Customer { get; set; }
+        public virtual TimeSlot Timeslot { get; set; }
+        public virtual Table Table { get; set; }
+
+
     }
 }
