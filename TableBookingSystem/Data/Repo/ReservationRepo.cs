@@ -31,18 +31,20 @@ namespace TableBookingSystem.Data.Repo
 		public async Task<Reservation> GetReservationByIdAsync(int reservationId)
 		{
 			var reservation = await _context.Reservations
-				.Include(r => r)
-				.Include(r => r.Timeslot)
-				.FirstOrDefaultAsync(r => r.ReservationId == reservationId);
+                .Include(r => r.Customer)
+                .Include(r => r.Timeslot)
+                .Include(r => r.Table)
+                .FirstOrDefaultAsync(r => r.ReservationId == reservationId);
 			return reservation;
 		}
 
 		public async Task<IEnumerable<Reservation>> GetReservationsByCustomerLastNameAsync(string lastName)
 		{
 			var reservations = await _context.Reservations
-				.Where(r => r.Customer.LastName.Contains(lastName))
-				.Include(r => r.Customer)
-				.Include(r => r.Timeslot)
+                .Include(r => r.Customer)
+                .Include(r => r.Timeslot)
+				.Include(r => r.Table)
+                .Where(r => r.Customer.LastName.Contains(lastName))
 				.ToListAsync();
 			return reservations;
 		}
@@ -50,7 +52,10 @@ namespace TableBookingSystem.Data.Repo
 		public async Task<IEnumerable<Reservation>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate)
 		{
 			var reservations = await _context.Reservations
-				.Where(r => r.ReservationDate >= startDate && r.ReservationDate <= endDate)
+                .Include(r => r.Customer)
+                .Include(r => r.Timeslot)
+                .Include(r => r.Table)
+                .Where(r => r.ReservationDate >= startDate && r.ReservationDate <= endDate)
 				.ToListAsync();
 			return reservations;
 		}
