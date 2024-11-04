@@ -12,7 +12,7 @@ using TableBookingSystem.Data;
 namespace TableBookingSystem.Migrations
 {
     [DbContext(typeof(TableBookingSystemContext))]
-    [Migration("20241028005642_init")]
+    [Migration("20241101143818_init")]
     partial class init
     {
         /// <inheritdoc />

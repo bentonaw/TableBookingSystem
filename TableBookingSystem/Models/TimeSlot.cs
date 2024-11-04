@@ -12,6 +12,6 @@ namespace TableBookingSystem.Models
 		[Required]
 		public TimeSpan EndTime { get; set; }
 
-        public virtual ICollection<Reservation> Reservations { get; set; }
+        //public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

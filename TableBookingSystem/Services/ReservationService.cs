@@ -74,9 +74,15 @@ namespace TableBookingSystem.Services
             }
         }
 
-        public async Task<GetReservationDTO?> GetReservationByIdAsync(int reservationId)
+        public async Task<GetReservationDTO> GetReservationByIdAsync(int reservationId)
         {
             var reservation = await _repo.GetReservationByIdAsync(reservationId);
+            if (reservation != null)
+            {
+                // Ensure Customer and TimeSlot are included
+                var customer = await _customerRepo.GetCustomerByIdAsync(reservation.CustomerId);
+                var timeSlot = (await _repo.GetTimeSlotAsync()).FirstOrDefault(ts => ts.TimeSlotId == reservation.TimeSlotId);
+            }
             return reservation != null ? _mapper.Map<GetReservationDTO>(reservation) : null;
         }
 
